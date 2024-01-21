@@ -1,5 +1,7 @@
 def input_error(func):
+
     def wrapper(*args, **kwargs):
+        #print('penis')
         try:
             return func(*args, **kwargs)
         except (KeyError, ValueError, IndexError) as e:
@@ -23,6 +25,9 @@ def handle_add(command):
     # Розбиваємо введену команду на частини
     _, name, phone = command.split()
     # Зберігаємо контакт в словнику
+    if name in contacts:
+
+        return 'This contact already has a phone number'
     contacts[name] = phone
     return f"Contact {name} added with phone {phone}"
 
@@ -65,16 +70,16 @@ def main():
             break
 
         # Обробка команд за допомогою відповідних функцій-обработчиків
-        if user_input.startswith("hello"):
+        if user_input == "hello":
             print(handle_hello())
 
-        elif user_input.startswith("add"):
+        elif user_input.startswith("add "):
             print(handle_add(user_input))
 
-        elif user_input.startswith("change"):
+        elif user_input.startswith("change "):
             print(handle_change(user_input))
 
-        elif user_input.startswith("phone"):
+        elif user_input.startswith("phone "):
             print(handle_phone(user_input))
 
         elif user_input == "show all":
