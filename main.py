@@ -16,7 +16,7 @@ contacts = {}
 
 # Декоратор для обробки помилок вводу
 @input_error
-def handle_hello():
+def handle_hello(command):
     return "How can I help you?"
 
 
@@ -48,7 +48,7 @@ def handle_phone(command):
 
 
 @input_error
-def handle_show_all():
+def handle_show_all(command):
     if not contacts:
         return "No contacts available."
 
@@ -59,34 +59,46 @@ def handle_show_all():
     return result.strip()
 
 
+@input_error
+def handle_end(command):
+    return 'Good bye!'
+
+
+ACTIONS = {
+    'hello ': handle_hello,
+    'add ': handle_add,
+    'change ': handle_change,
+    'phone ': handle_phone,
+    "show all ": handle_show_all,
+    'good night ': handle_end,
+    'exit ': handle_end,
+    'close ': handle_end
+}
+
+
+@input_error
+def bad_commands(command):
+    return 'Bad command'
+
+
+@input_error
+def get_hendler(user_input):
+    for action in ACTIONS:
+        if user_input.startswith(action):
+            return ACTIONS[action]
+    return bad_commands
+
+
 def main():
     while True:
         # Користувач вводить команду
-        user_input = input("Enter a command: ").lower()
+        user_input = f"{input('Enter a command: ').lower()} "
+        handler = get_hendler(user_input)
+        result = handler(user_input)
+        print(result)
+        if result == 'Good bye!':
 
-        # Перевірка на команду для завершення роботи бота
-        if user_input in ["good bye", "close", "exit"]:
-            print("Good bye!")
             break
-
-        # Обробка команд за допомогою відповідних функцій-обработчиків
-        if user_input == "hello":
-            print(handle_hello())
-
-        elif user_input.startswith("add "):
-            print(handle_add(user_input))
-
-        elif user_input.startswith("change "):
-            print(handle_change(user_input))
-
-        elif user_input.startswith("phone "):
-            print(handle_phone(user_input))
-
-        elif user_input == "show all":
-            print(handle_show_all())
-
-        else:
-            print("Invalid command. Please try again.")
 
 
 if __name__ == "__main__":
