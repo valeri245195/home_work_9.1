@@ -36,8 +36,10 @@ def handle_add(command):
 def handle_change(command):
     _, name, phone = command.split()
     # Міняємо номер телефону для існуючого контакту
-    contacts[name] = phone
-    return f"Phone number for contact {name} changed to {phone}"
+    if name in contacts:
+        contacts[name] = phone
+        return f"Phone number for contact {name} changed to {phone}"
+    return 'That name is not in the contact book'
 
 
 @input_error
