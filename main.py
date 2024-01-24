@@ -46,7 +46,9 @@ def handle_change(command):
 def handle_phone(command):
     _, name = command.split()
     # Виводимо номер телефону для зазначеного контакту
-    return f"The phone number for contact {name} is {contacts[name]}"
+    if name in contacts:
+        return f"The phone number for contact {name} is {contacts[name]}"
+    return f"Name {name} is not in the contact book"
 
 
 @input_error
