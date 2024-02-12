@@ -1,7 +1,6 @@
 def input_error(func):
 
     def wrapper(*args, **kwargs):
-        #print('penis')
         try:
             return func(*args, **kwargs)
         except (KeyError, ValueError, IndexError) as e:
